@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import CalendarGrid from "./components/CalendarGrid";
 import StudentList from "./components/StudentList";
 import { useAppContext } from "./context/AppContext";
@@ -17,6 +18,11 @@ export default function HomePage() {
 	return (
 		<div style={{ padding: "20px" }}>
 			<h1>Meeting Scheduler</h1>
+			<Link href="/overview">
+				<button style={{ marginTop: "20px", padding: "10px 15px" }}>
+					Go to Overview
+				</button>
+			</Link>
 			<CalendarGrid />
 			<StudentList />
 
