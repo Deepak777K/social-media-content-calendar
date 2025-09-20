@@ -36,23 +36,6 @@ export default function HomePage() {
 
 			<StudentList />
 
-			{Object.keys(schedule).length > 0 && (
-				<div style={{ marginTop: "20px" }}>
-					<h2>Generated Schedule</h2>
-					{Object.entries(schedule).map(([date, meetings]) => (
-						<div key={date} style={{ marginBottom: "15px" }}>
-							<h3>{date}</h3>
-							<ul>
-								{meetings.map((m, i) => (
-									<li key={i}>
-										{m.student_name} ({m.class_name}, Age {m.age})
-									</li>
-								))}
-							</ul>
-						</div>
-					))}
-				</div>
-			)}
 		</div>
 	);
 }
