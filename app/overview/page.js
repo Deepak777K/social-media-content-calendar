@@ -1,5 +1,6 @@
 "use client";
 import { useAppContext } from "../context/AppContext";
+import * as XLSX from "xlsx";
 
 export default function OverviewPage() {
 	const { schedule } = useAppContext();
@@ -8,6 +9,7 @@ export default function OverviewPage() {
 		return <p style={{ padding: "20px" }}>No schedule generated yet. Go back and create one first.</p>;
 	}
 
+	// Build class-wise summary
 	const classSummary = {};
 	Object.values(schedule).forEach((meetings) => {
 		meetings.forEach((m) => {
@@ -16,10 +18,52 @@ export default function OverviewPage() {
 		});
 	});
 
+	// Export to Excel
+	const handleExport = () => {
+		const wb = XLSX.utils.book_new();
+
+		// 1. Overview Sheet
+		const overviewData = [["Class", "Total Meetings"]];
+		Object.entries(classSummary).forEach(([cls, count]) => {
+			overviewData.push([cls, count]);
+		});
+		const overviewWS = XLSX.utils.aoa_to_sheet(overviewData);
+		XLSX.utils.book_append_sheet(wb, overviewWS, "Overview");
+
+		// 2. Date-wise Sheets
+		Object.entries(schedule).forEach(([date, meetings]) => {
+			const sheetData = [["Student", "Class", "Age", "Instructor"]];
+			meetings.forEach((m) => {
+				sheetData.push([m.student_name, m.class_name, m.age, m.instructor_name]);
+			});
+			const ws = XLSX.utils.aoa_to_sheet(sheetData);
+			XLSX.utils.book_append_sheet(wb, ws, date);
+		});
+
+		// Download file
+		XLSX.writeFile(wb, "Meeting_Schedule.xlsx");
+	};
+
 	return (
 		<div style={{ padding: "20px" }}>
 			<h1>Overview</h1>
 
+			<button
+				onClick={handleExport}
+				style={{
+					marginBottom: "20px",
+					padding: "10px 15px",
+					background: "#4cafef",
+					color: "white",
+					border: "none",
+					borderRadius: "4px",
+					cursor: "pointer",
+				}}
+			>
+				Export to Excel
+			</button>
+
+			{/* Daily Breakdown */}
 			<h2>Daily Schedule</h2>
 			{Object.entries(schedule).map(([date, meetings]) => (
 				<div key={date} style={{ marginBottom: "20px" }}>
@@ -48,6 +92,7 @@ export default function OverviewPage() {
 				</div>
 			))}
 
+			{/* Class Summary */}
 			<h2>Class-wise Summary</h2>
 			<table style={{ width: "50%", borderCollapse: "collapse" }}>
 				<thead>
