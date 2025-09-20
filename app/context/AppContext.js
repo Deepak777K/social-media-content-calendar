@@ -6,6 +6,7 @@ const AppContext = createContext();
 export const AppProvider = ({ children }) => {
 	const [students, setStudents] = useState([]);
 	const [selectedDates, setSelectedDates] = useState([]);
+	const [schedule, setSchedule] = useState({});
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -17,7 +18,16 @@ export const AppProvider = ({ children }) => {
 	}, []);
 
 	return (
-		<AppContext.Provider value={{ students, setStudents, selectedDates, setSelectedDates }}>
+		<AppContext.Provider
+			value={{
+				students,
+				setStudents,
+				selectedDates,
+				setSelectedDates,
+				schedule,
+				setSchedule,
+			}}
+		>
 			{children}
 		</AppContext.Provider>
 	);
