@@ -13,7 +13,7 @@ const generateCalendarDays = (year, month) => {
 };
 
 export default function CalendarGrid() {
-	const { selectedDates, setSelectedDates } = useAppContext();
+	const { selectedDates, setSelectedDates, schedule } = useAppContext();
 
 	const today = new Date();
 	const year = today.getFullYear();
@@ -45,6 +45,8 @@ export default function CalendarGrid() {
 				{days.map((day) => {
 					const dateStr = day.toISOString().split("T")[0];
 					const isSelected = selectedDates.includes(dateStr);
+					const meetings = schedule[dateStr] || [];
+
 					return (
 						<div
 							key={dateStr}
@@ -59,15 +61,25 @@ export default function CalendarGrid() {
 								color: isSelected ? "white" : "black",
 							}}
 						>
-							{day.getDate()}
+							<div>{day.getDate()}</div>
+							{meetings.length > 0 && (
+								<div
+									style={{
+										marginTop: "5px",
+										fontSize: "0.75rem",
+										background: "white",
+										color: "black",
+										borderRadius: "3px",
+										padding: "2px",
+									}}
+								>
+									{meetings.length} meeting{meetings.length > 1 ? "s" : ""}
+								</div>
+							)}
 						</div>
 					);
 				})}
 			</div>
-
-			<p style={{ marginTop: "15px" }}>
-				Selected Dates: {selectedDates.join(", ")}
-			</p>
 		</div>
 	);
 }
