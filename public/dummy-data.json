@@ -1,0 +1,16 @@
+[
+	{
+		"student_name": "Ananya Sharma",
+		"meetings": 4,
+		"age": 17,
+		"class_name": "Mathematics",
+		"instructor_name": "Mr. Verma"
+	},
+	{
+		"student_name": "Rohan Mehta",
+		"meetings": 3,
+		"age": 18,
+		"class_name": "Science",
+		"instructor_name": "Dr. Bhatia"
+	}
+]
