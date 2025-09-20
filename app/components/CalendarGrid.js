@@ -37,7 +37,7 @@ export default function CalendarGrid() {
 			<div
 				style={{
 					display: "grid",
-					gridTemplateColumns: "repeat(7, 1fr)",
+					gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))",
 					gap: "8px",
 					marginTop: "10px",
 				}}

@@ -1,39 +1,44 @@
-"use client";
-import React from "react";
+import React, { useState } from "react";
 import { useAppContext } from "../context/AppContext";
 
 export default function StudentList() {
 	const { students } = useAppContext();
+	const [filter, setFilter] = useState("");
 
-	if (!students.length) return <p>Loading students...</p>;
+	const filtered = students.filter(
+		(s) =>
+			s.student_name.toLowerCase().includes(filter.toLowerCase()) ||
+			s.class_name.toLowerCase().includes(filter.toLowerCase())
+	);
 
 	return (
 		<div style={{ marginTop: "20px" }}>
 			<h2>Student Data</h2>
-			<table
-				style={{
-					width: "100%",
-					borderCollapse: "collapse",
-					marginTop: "10px",
-				}}
-			>
+			<input
+				type="text"
+				placeholder="Filter by name or class"
+				value={filter}
+				onChange={(e) => setFilter(e.target.value)}
+				style={{ marginBottom: "10px", padding: "5px" }}
+			/>
+			<table style={{ width: "100%", borderCollapse: "collapse" }}>
 				<thead>
 					<tr style={{ background: "#f0f0f0" }}>
-						<th style={{ border: "1px solid #ccc", padding: "8px" }}>Name</th>
-						<th style={{ border: "1px solid #ccc", padding: "8px" }}>Class</th>
-						<th style={{ border: "1px solid #ccc", padding: "8px" }}>Age</th>
-						<th style={{ border: "1px solid #ccc", padding: "8px" }}>Meetings</th>
-						<th style={{ border: "1px solid #ccc", padding: "8px" }}>Instructor</th>
+						<th>Name</th>
+						<th>Class</th>
+						<th>Age</th>
+						<th>Meetings</th>
+						<th>Instructor</th>
 					</tr>
 				</thead>
 				<tbody>
-					{students.map((s, i) => (
+					{filtered.map((s, i) => (
 						<tr key={i}>
-							<td style={{ border: "1px solid #ccc", padding: "8px" }}>{s.student_name}</td>
-							<td style={{ border: "1px solid #ccc", padding: "8px" }}>{s.class_name}</td>
-							<td style={{ border: "1px solid #ccc", padding: "8px" }}>{s.age}</td>
-							<td style={{ border: "1px solid #ccc", padding: "8px" }}>{s.meetings}</td>
-							<td style={{ border: "1px solid #ccc", padding: "8px" }}>{s.instructor_name}</td>
+							<td>{s.student_name}</td>
+							<td>{s.class_name}</td>
+							<td>{s.age}</td>
+							<td>{s.meetings}</td>
+							<td>{s.instructor_name}</td>
 						</tr>
 					))}
 				</tbody>
