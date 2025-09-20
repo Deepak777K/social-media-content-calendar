@@ -26,24 +26,63 @@ export default function OverviewPage() {
 		setEditing(null);
 	};
 
-	// Export to Excel (same as Day 7)
+	// Export to Excel with per-date class breakdown
 	const handleExport = () => {
 		const wb = XLSX.utils.book_new();
-		const overviewData = [["Class", "Total Meetings"]];
-		const classSummary = {};
-		Object.values(schedule).forEach((meetings) => {
-			meetings.forEach((m) => {
-				if (!classSummary[m.class_name]) classSummary[m.class_name] = 0;
-				classSummary[m.class_name]++;
+
+		// Collect all unique class names
+		const allClasses = Array.from(
+			new Set(Object.values(schedule).flat().map((m) => m.class_name))
+		);
+
+		// Build overview data
+		const overviewData = [["Date", ...allClasses, "Total Meetings"]];
+
+		const totals = {};
+		allClasses.forEach((cls) => (totals[cls] = 0));
+		let grandTotal = 0;
+
+		Object.entries(schedule).forEach(([date, meetings]) => {
+			const row = [date];
+			let rowTotal = 0;
+
+			allClasses.forEach((cls) => {
+				const count = meetings.filter((m) => m.class_name === cls).length;
+				row.push(count);
+				totals[cls] += count;
+				rowTotal += count;
 			});
+
+			row.push(rowTotal);
+			grandTotal += rowTotal;
+			overviewData.push(row);
 		});
-		Object.entries(classSummary).forEach(([cls, count]) => overviewData.push([cls, count]));
+
+		// Add totals row
+		overviewData.push([
+			"Total",
+			...allClasses.map((cls) => totals[cls]),
+			grandTotal,
+		]);
+
 		const overviewWS = XLSX.utils.aoa_to_sheet(overviewData);
 		XLSX.utils.book_append_sheet(wb, overviewWS, "Overview");
 
+		// Date-wise sheets (unchanged)
 		Object.entries(schedule).forEach(([date, meetings]) => {
-			const sheetData = [["Student", "Class", "Age", "Instructor"]];
-			meetings.forEach((m) => sheetData.push([m.student_name, m.class_name, m.age, m.instructor_name]));
+			const sheetData = [
+				["Date", "Student Name", "Class", "Age", "Meeting Link", "Attendance"],
+			];
+			meetings.forEach((m) => {
+				sheetData.push([
+					date,
+					m.student_name,
+					m.class_name,
+					m.age,
+					m.meeting_link || "https://example.com/meeting",
+					m.attendance || "Present",
+				]);
+			});
 			const ws = XLSX.utils.aoa_to_sheet(sheetData);
 			XLSX.utils.book_append_sheet(wb, ws, date);
 		});
