@@ -4,6 +4,34 @@ A web-based meeting scheduler built with **Next.js** that allows users to select
 
 ---
 
+## ⚙️ Setup Instructions
+1. Clone the repo:
+```bash
+git clone https://github.com/Deepak777K/social-media-content-calendar.git
+cd meeting-scheduler
+```
+
+or download the zip
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 📦 Deliverables
+- Functional calendar UI
+- API integration with dummy data
+- Excel export with overview + per-date sheets
+- Clean, responsive UI
+- GitHub repo with structured commits + README
+
 ## 🚀 Features
 - Interactive **calendar UI** for selecting dates
 - **Age-based scheduling** (older students get priority)
@@ -41,36 +69,6 @@ A web-based meeting scheduler built with **Next.js** that allows users to select
 /public
   dummy-data.json
 ```
-
----
-
-## ⚙️ Setup Instructions
-1. Clone the repo:
-```bash
-git clone https://github.com/Deepak777K/social-media-content-calendar.git
-cd meeting-scheduler
-```
-
-or download the zip
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
----
-
-## 📦 Deliverables
-- Functional calendar UI
-- API integration with dummy data
-- Excel export with overview + per-date sheets
-- Clean, responsive UI
-- GitHub repo with structured commits + README
 
 ---
 
